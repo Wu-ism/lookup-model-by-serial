@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Model and Firmware Finder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container form input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .container form button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 25px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            max-width: 300px;
+            width: 100%;
+        }
+        .container form button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .firmware-link {
+            display: block;
+            margin-top: 10px;
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .firmware-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enter Serial Number</h1>
+        <form id="serialForm">
+            <input type="text" id="serialNumber" name="serialNumber" placeholder="Enter your serial number" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="result"></p>
+        <a id="firmwareLink" class="firmware-link" href="#" target="_blank"></a>
+    </div>
+
+    <script>
+        document.getElementById('serialForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const serialNumber = document.getElementById('serialNumber').value;
+            fetch('/getFirmware', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ serialNumber: serialNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Product Model: ${data.productModel}\nRecommended Firmware: ${data.firmwareVersion}`;
+                const firmwareLink = document.getElementById('firmwareLink');
+                firmwareLink.href = data.firmwareLink;
+                firmwareLink.innerText = 'Download Firmware';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
