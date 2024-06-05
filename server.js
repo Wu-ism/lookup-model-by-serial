@@ -1,11 +1,10 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const prefixData = require('./prefixData');
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 80; // Use port 80
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -39,6 +38,6 @@ app.post('/getFirmware', (req, res) => {
     return res.status(400).json({ error: 'Invalid serial number' });
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => { // Listen on all IP addresses
     console.log(`Server running at http://localhost:${port}/`);
 });
