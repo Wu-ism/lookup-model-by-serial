@@ -5,7 +5,7 @@ const path = require('path');
 const prefixData = require('./prefixData');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 80;
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
