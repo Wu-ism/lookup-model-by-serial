@@ -4,7 +4,7 @@ const path = require('path');
 const prefixData = require('./prefixData');
 
 const app = express();
-const port = process.env.PORT || 80; // Use port 80 or any other available port
+const port = process.env.PORT || 3000; // Use port 80 or any other available port
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -29,6 +29,7 @@ const getFirmwareInfo = (productModel) => {
 
 app.post('/getFirmware', (req, res) => {
     const { serialNumber } = req.body;
+
     if (serialNumber) {
         const prefix = serialNumber.slice(0, 2).toUpperCase();  // Assuming the prefix is the first 2 characters
         const productModel = prefixData[prefix] || 'Unknown product model';
